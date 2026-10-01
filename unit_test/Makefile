@@ -1,12 +1,15 @@
 CC = cc -Wall -Wextra -Werror
 SRC_roulette = $(wildcard roulette/*.c)
-
 OBJ_roulette = $(patsubst %.c, obj/%.o, $(SRC_roulette))
 OUT_roulette = $(patsubst %.c, out/%.out, $(SRC_roulette))
 
-all: $(OUT_roulette)
+SRC_duel = $(wildcard duel/*.c)
+OBJ_duel = $(patsubst %.c, obj/%.o, $(SRC_duel))
+OUT_duel = $(patsubst %.c, out/%.out, $(SRC_duel))
 
-$(OUT_roulette): out/%.out: obj/%.o
+all: $(OUT_roulette) $(OUT_duel)
+
+out/%.out: obj/%.o
 	@mkdir -p $(@D)
 	$(CC) -o $@ $^ -L. ../src/lib/utils.a
 

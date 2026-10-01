@@ -19,6 +19,11 @@ float	f_floor(float num);
 int		f_interval(int num, int min, int max);
 float	f_round(float num);
 
+// merge_sort.c
+
+int		*merge_sort(int *src, size_t length);
+
+
 // string.c
 
 void	*malloc_talk(size_t elem_size, const char *comment);

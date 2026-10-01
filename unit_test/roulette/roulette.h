@@ -3,16 +3,16 @@
 
 # include "../../src/utils/utils.h"
 
-typedef struct t_person
+typedef struct t_competitor
 {
 	size_t	name;
 	bool	alive;
 	size_t	age;
-}	t_person;
+}	t_competitor;
 
 typedef struct t_arg
 {
-	t_person	*person;
+	t_competitor	*person;
 	size_t		bullet;
 	size_t		all_bullet;
 	size_t		queue;

@@ -1,6 +1,6 @@
 #include "roulette.h"
 
-void	write_log(const t_person *src, int fd)
+void	write_log(const t_competitor *src, int fd)
 {
 	if (src == NULL)
 		return ;
@@ -38,7 +38,7 @@ int	main(int len, char **str)
 	size_t		bullet;
 	size_t		temp;
 	t_arg		arg;
-	t_person	*person;
+	t_competitor	*person;
 	bool		is_int = true;
 	bool		is_int2 = true;
 	size_t		i;
@@ -62,7 +62,7 @@ int	main(int len, char **str)
 		all_bullet = temp;
 	}
 
-	person = malloc_talk(sizeof(t_person) * all_bullet, "roulette\n");
+	person = malloc_talk(sizeof(t_competitor) * all_bullet, "roulette\n");
 	if (person == NULL)
 		return (0);
 	i = 0;

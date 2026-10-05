@@ -10,12 +10,12 @@ typedef struct t_competitor
 	size_t	age;
 }	t_competitor;
 
-typedef struct t_arg
+typedef struct t_visitor
 {
 	t_competitor	*person;
 	size_t		bullet;
 	size_t		all_bullet;
 	size_t		queue;
-}	t_arg;
+}	t_visitor;
 
 #endif

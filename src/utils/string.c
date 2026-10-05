@@ -86,3 +86,21 @@ size_t	knight_of_coin(const char *str, char stop)
 		i += 1;
 	return (i);
 }
+
+int	*rand_int_arr(size_t length)
+{
+	size_t	i;
+	int		*dst;
+
+	dst = malloc_talk(sizeof(int) * length, "rand_int_arr\n");
+	if (dst == NULL)
+		return (NULL);
+	srand(time(NULL));
+	i = 0;
+	while (i < length)
+	{
+		dst[i] = rand() % 83742;
+		i += 1;
+	}
+	return (dst);
+}

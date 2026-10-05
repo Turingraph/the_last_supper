@@ -14,6 +14,10 @@ OUT_vacation = $(patsubst %.c, out/%.out, $(SRC_vacation))
 
 all: $(OUT_roulette) $(OUT_duel) $(OUT_vacation)
 
+$(OUT_vacation): out/%.out: obj/%.o
+	@mkdir -p $(@D)
+	$(CC) -o $@ $^ -L. ../src/lib/utils.a ../src/lib/vacation.a
+
 out/%.out: obj/%.o
 	@mkdir -p $(@D)
 	$(CC) -o $@ $^ -L. ../src/lib/utils.a

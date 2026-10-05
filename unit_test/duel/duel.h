@@ -28,11 +28,11 @@ typedef struct t_duel
 	pthread_mutex_t *mutex;
 }	t_duel;
 
-typedef struct t_arg
+typedef struct t_visitor
 {
 	size_t	queue;
 	t_team	team;
 	t_duel	*duel;
-}	t_arg;
+}	t_visitor;
 
 #endif

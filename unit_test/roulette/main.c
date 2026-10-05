@@ -16,7 +16,7 @@ void	write_log(const t_competitor *src, int fd)
 
 void	*roulette_action(void *arg)
 {
-	t_arg		*src;
+	t_visitor		*src;
 
 	src = arg;
 	if (arg == NULL || src->all_bullet == 0)
@@ -37,7 +37,7 @@ int	main(int len, char **str)
 	size_t		all_bullet;
 	size_t		bullet;
 	size_t		temp;
-	t_arg		arg;
+	t_visitor		arg;
 	t_competitor	*person;
 	bool		is_int = true;
 	bool		is_int2 = true;

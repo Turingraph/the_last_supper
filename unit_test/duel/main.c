@@ -1,30 +1,12 @@
 #include "duel.h"
 
-bool	is_arg_valid(const t_arg *src)
+bool	is_arg_valid(const t_visitor *src)
 {
 	if (src == NULL || src->duel == NULL
 		|| src->duel->battle == false
 		|| src->duel->length < 2 || src->duel->competitor == NULL)
 		return (false);
 	return (true);
-}
-
-int	*rand_int_arr(size_t length)
-{
-	size_t	i;
-	int		*dst;
-
-	dst = malloc_talk(sizeof(int) * length, "rand_int_arr\n");
-	if (dst == NULL)
-		return (NULL);
-	srand(time(NULL));
-	i = 0;
-	while (i < length)
-	{
-		dst[i] = rand() % 83742;
-		i += 1;
-	}
-	return (dst);
 }
 
 bool	is_battle_start(t_competitor *arr, size_t length)
@@ -86,7 +68,7 @@ void	write_criminal_record(size_t bad_guy, size_t victim, int fd, t_team team)
 
 void	*duel_action(void *arg)
 {
-	t_arg	*dst;
+	t_visitor	*dst;
 	t_duel	*duel;
 	size_t	queue_b;
 	int		*arr;
@@ -186,8 +168,8 @@ int	main(int len, char **str)
 
 	pthread_t	thread_a;
 	pthread_t	thread_b;
-	t_arg		arg_a;
-	t_arg		arg_b;
+	t_visitor		arg_a;
+	t_visitor		arg_b;
 
 	arg_a.duel = &duel;
 	arg_b.duel = &duel;

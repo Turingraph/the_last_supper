@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <time.h>
 
 // atoi.c
 
@@ -23,11 +24,11 @@ float	f_round(float num);
 
 int		*merge_sort(int *src, size_t length);
 
-
 // string.c
 
 void	*malloc_talk(size_t elem_size, const char *comment);
 size_t	f_strlen(const char *str);
 size_t	knight_of_coin(const char *str, char stop);
+int		*rand_int_arr(size_t length);
 
 #endif

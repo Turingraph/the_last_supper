@@ -1,0 +1,8 @@
+A. There are m agents, each agent have one of n genders
+B. Each agents have one of 2^n orientations (including the wish for one of every combination of all gender actively and no orientation a.k.a. inactive)
+C. Each agents will seek k friends that align with its orientation or won't seek friends if it inactive.
+D. After the agent belong to its group for p seconds (or be inactive for p seconds) it might or might not change its gender and/or orientation, based on its friend's genders composition and its if else condition and its current state.
+
+(But I think D. is all about if your friend is bisexual woman, you will be a bisexual man, if your friend is straight woman, you won't change your gender and your orientation. If your n friends is m genders, you will be k-th gender/orientation etc. The D's input is always depending on your network's gender/orientation, and output is changing your gender/orientation according to your internal if else condition, without consider your history e.g. how many ex you have that is gay etc.)
+
+Such that this align with typical Markov chain, simplified romance simulation of gay/guy/girl/straight/bisexual/pansexual dating with each other, simplified hydrogen and oxygen simulation, and Dijkstra Philosophers (there are 2 * n genders, and every Philosophers sometimes have orientation that align with the surrounding fork and sometimes Philosophers be "aroace" a.k.a. empty orientation, and if it be "aroace" too long it will be "aroace" forever a.k.a. die), and drug vs cancer (some drug dating with cancer and after that the cancer become inactive forever) etc.

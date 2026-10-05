@@ -28,25 +28,20 @@ int	main(int len, char **str)
 		i += 1;
 	}
 
+	pthread_t	*thread = malloc_talk(sizeof(pthread_t) * (arg_length[0] + 1), "vacation (pthread)\n");
+	t_visitor	*args = init_visitors(arg_length, len);
 	pthread_mutex_t mutex;
-
-	pthread_mutex_init(&mutex, NULL);
-
 	sem_t clients;
 
+	pthread_mutex_init(&mutex, NULL);
 	sem_init(&clients, 0, 1);
-	t_visitor	*args = init_visitors(arg_length, len);
 	init_visitor_mutex(args, &mutex, &clients, NULL);
-
-	pthread_t	*thread = malloc_talk(sizeof(pthread_t) * (arg_length[0] + 1), "vacation (pthread)\n");
-
 	i = 0;
 	while (i < arg_length[0])
 	{
 		pthread_create(thread + i, NULL, vacation_action, (void*)(args + i));
 		i += 1;
 	}
-
 	i = 0;
 	while (i < arg_length[0])
 	{

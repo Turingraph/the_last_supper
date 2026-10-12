@@ -49,7 +49,6 @@ int	main(int len, char **str)
 		i += 1;
 	}
 	free(thread);
-	free(args->home_arr.arr);
 	free(args);
 	pthread_mutex_destroy(&mutex);
 	free(arg_length);

@@ -1,5 +1,9 @@
 CC = cc -Wall -Wextra -Werror
 
+SRC_philosopher = $(wildcard philosopher/*.c)
+OBJ_philosopher = $(patsubst %.c, obj/%.o, $(SRC_philosopher))
+OUT_philosopher = $(patsubst %.c, out/%.out, $(SRC_philosopher))
+
 SRC_roulette = $(wildcard roulette/*.c)
 OBJ_roulette = $(patsubst %.c, obj/%.o, $(SRC_roulette))
 OUT_roulette = $(patsubst %.c, out/%.out, $(SRC_roulette))
@@ -12,7 +16,11 @@ SRC_vacation = $(wildcard vacation/*.c)
 OBJ_vacation = $(patsubst %.c, obj/%.o, $(SRC_vacation))
 OUT_vacation = $(patsubst %.c, out/%.out, $(SRC_vacation))
 
-all: $(OUT_roulette) $(OUT_duel) $(OUT_vacation)
+all: $(OUT_roulette) $(OUT_duel) $(OUT_vacation) $(OUT_philosopher)
+
+$(OUT_philosopher): out/%.out: obj/%.o
+	@mkdir -p $(@D)
+	$(CC) -o $@ $^ -L. ../src/lib/utils.a ../src/lib/philosopher.a
 
 $(OUT_vacation): out/%.out: obj/%.o
 	@mkdir -p $(@D)

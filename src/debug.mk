@@ -10,17 +10,19 @@ CC = cc -Wall -Wextra -Werror
 .SECONDEXPANSION:
 
 # *** library ***
-LIBRARY = $(patsubst %, lib/%.a, utils vacation)
+LIBRARY = $(patsubst %, lib/%.a, utils vacation philosopher)
 
 # *** atom src ***
 SRC_utils = $(wildcard utils/*.c)
 SRC_vacation = $(wildcard vacation/*.c)
+SRC_philosopher = $(wildcard philosopher/*.c)
 
 #-----------------------------------------------------------------------------------------------
 
 # *** elementary obj ***
 OBJ_utils = $(patsubst %.c, obj/%.o, $(SRC_utils))
 OBJ_vacation = $(patsubst %.c, obj/%.o, $(SRC_vacation)) $(OBJ_utils)
+OBJ_philosopher = $(patsubst %.c, obj/%.o, $(SRC_philosopher)) $(OBJ_utils)
 
 #-----------------------------------------------------------------------------------------------
 # *** create library ***

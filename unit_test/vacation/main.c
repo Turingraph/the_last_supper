@@ -57,6 +57,6 @@ int	main(int len, char **str)
 }
 
 /*
-pc@pc-System-Product-Name:~/Desktop/love_the_knowledge$ valgrind --leak-check=full --show-leak-kinds=all ./unit_test/out/vacation/main.out 5 10 300 310 333
+valgrind --leak-check=full --show-leak-kinds=all ./unit_test/out/vacation/main.out 5 10 300 310 333
 
 */

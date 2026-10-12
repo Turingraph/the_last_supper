@@ -16,7 +16,7 @@ void	*traveloka_action(void *arg)
 		if (client_count == dst->length)
 		{
 			record_time += 1;
-			sem_post(dst->server);
+			// sem_post(dst->server);
 		}
 	}
 	return (NULL);

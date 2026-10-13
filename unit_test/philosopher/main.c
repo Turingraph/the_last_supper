@@ -1,14 +1,9 @@
 # include "../../src/philosopher/philosopher.h"
 
-void	second_main(size_t length,
-	sem_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
+static void	third_main(size_t length, pthread_t *thread, t_philosopher *philosophers, t_fork *forks)
 {
-	size_t			i;
-	t_philosopher	*philosophers;
-	t_fork			*forks;
+	size_t	i;
 
-	philosophers = init_philosopher_arr(length, 10, sem_arr, mutex);
-	forks = init_fork_arr(length, sem_arr, mutex);
 	i = 0;
 	while (i < length)
 	{
@@ -23,6 +18,24 @@ void	second_main(size_t length,
 		pthread_join(thread[i + length], NULL);
 		i += 1;
 	}
+}
+
+static void	second_main(size_t length,
+	sem_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
+{
+	t_philosopher	*philosophers;
+	t_fork			*forks;
+	size_t			i;
+
+	philosophers = init_philosopher_arr(length, 10, sem_arr, mutex);
+	forks = init_fork_arr(length, sem_arr, mutex);
+	if (philosophers == NULL || forks == NULL)
+	{
+		free(philosophers);
+		free(forks);
+		return ;
+	}
+	third_main(length, thread, philosophers, forks);
 	i = 0;
 	while (i < length)
 	{
@@ -50,6 +63,12 @@ int	main(int len, char **str)
 		return (0);
 	sem_arr = init_multisems(length);
 	thread = malloc_talk(sizeof(pthread_t) * length * 2, "philosophers (pthread)\n");
+	if (sem_arr == NULL || thread == NULL)
+	{
+		free(sem_arr);
+		free(thread);
+		return (0);
+	}
 	pthread_mutex_init(&mutex, NULL);
 	second_main(length, sem_arr, &mutex, thread);
 	free(sem_arr);

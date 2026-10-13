@@ -12,6 +12,7 @@ typedef struct t_philosopher
 	bool	is_pick_left;
 	bool	is_pick_right;
 	size_t	eat_time;
+	// size_t	starve_time;
 	size_t	day;
 	size_t	max_day;
 	size_t	think_time;
@@ -20,22 +21,10 @@ typedef struct t_philosopher
 	pthread_mutex_t	*mutex;
 }	t_philosopher;
 
-typedef struct t_fork
-{
-	size_t	name;
-	size_t	length;
-	bool	is_used;
-	sem_t	*hand_lock;
-	sem_t	*fork_right;
-	size_t	max_day;
-	size_t	day;
-	pthread_mutex_t	*mutex;
-}	t_fork;
-
 // action.c
 
-void	*philosopher_action(void *arg);
-void	*fork_action(void *arg);
+void	*philosopher_right_action(void *arg);
+void	*philosopher_left_action(void *arg);
 
 // init.c
 
@@ -44,8 +33,5 @@ t_philosopher	*init_philosopher_arr(size_t length,
 	sem_t *hand_lock,
 	pthread_mutex_t *mutex);
 sem_t	*init_multisems(size_t length);
-t_fork	*init_fork_arr(size_t length,
-	sem_t *hand_lock,
-	pthread_mutex_t *mutex);
 
 #endif

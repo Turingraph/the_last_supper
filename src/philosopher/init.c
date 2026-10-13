@@ -50,30 +50,3 @@ sem_t	*init_multisems(size_t length)
 	}
 	return (dst);
 }
-
-t_fork	*init_fork_arr(size_t length,
-	sem_t *hand_lock,
-	pthread_mutex_t *mutex)
-{
-	t_fork	*dst;
-	size_t	i;
-
-	if (length < 2 || hand_lock == NULL)
-		return (NULL);
-	dst = malloc_talk(sizeof(t_fork) * length, "philosopher\n");
-	if (dst == NULL)
-		return (NULL);
-	i = 0;
-	while (i < length)
-	{
-		dst[i].name = i;
-		dst[i].length = length;
-		dst[i].is_used = false;
-		dst[i].hand_lock = hand_lock + i;
-		dst[i].max_day = 2 * length;
-		dst[i].day = 0;
-		dst[i].mutex = mutex;
-		i += 1;
-	}
-	return (dst);
-}

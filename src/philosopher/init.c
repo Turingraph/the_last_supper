@@ -15,6 +15,8 @@ t_philosopher	init_philosopher_unit(size_t i,
 	dst.time_to_live = 100;
 	dst.time_to_eat = 100;
 	dst.time_to_sleep = 100;
+	dst.prev_eat = 0;
+	dst.is_loop = NULL;
 	dst.hand_lock_l = hand_lock + i;
 	dst.hand_lock_r = hand_lock + (i + 1) % length;
 	dst.mutex = mutex;

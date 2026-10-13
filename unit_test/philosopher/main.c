@@ -1,16 +1,16 @@
 # include "../../src/philosopher/philosopher.h"
 
-static void	third_main(size_t length, pthread_t *thread, t_philosopher *philosophers)
+static void	third_main(size_t length, pthread_t *thread,
+	t_philosopher *philosophers, bool *is_loop)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < length)
 	{
-		if (i % 2 == 0)
-			pthread_create(thread + i, NULL, philosopher_right_action, (void*)(philosophers + i));
-		else
-			pthread_create(thread + i, NULL, philosopher_left_action, (void*)(philosophers + i));
+		philosophers[i].is_loop = is_loop;
+		pthread_create(thread + i, NULL,
+			philosopher_action, (void*)(philosophers + i));
 		i += 1;
 	}
 	i = 0;
@@ -21,22 +21,24 @@ static void	third_main(size_t length, pthread_t *thread, t_philosopher *philosop
 	}
 }
 
-static void	second_main(size_t length,
+static void	second_main(t_philosopher arg,
 	pthread_mutex_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
 {
 	t_philosopher	*philosophers;
 	size_t			i;
+	bool			is_loop;
 
-	philosophers = init_philosopher_arr(length, sem_arr, mutex);
-	update_philosophers(philosophers, 10, E_TIMETOLIVE, length);
-	update_philosophers(philosophers, 100, E_TIMETOEAT, length);
-	update_philosophers(philosophers, 100, E_TIMETODIE, length);
-	update_philosophers(philosophers, 100, E_TIMETOSLEEP, length);
+	philosophers = init_philosopher_arr(arg.length, sem_arr, mutex);
+	update_philosophers(philosophers, arg.time_to_live, E_TIMETOLIVE, arg.length);
+	update_philosophers(philosophers, arg.time_to_eat, E_TIMETOEAT, arg.length);
+	update_philosophers(philosophers, arg.time_to_die, E_TIMETODIE, arg.length);
+	update_philosophers(philosophers, arg.time_to_sleep, E_TIMETOSLEEP, arg.length);
 	if (philosophers == NULL)
 		return ;
-	third_main(length, thread, philosophers);
+	is_loop = true;
+	third_main(arg.length, thread, philosophers, &is_loop);
 	i = 0;
-	while (i < length)
+	while (i < arg.length)
 	{
 		pthread_mutex_destroy(sem_arr + i);
 		i += 1;
@@ -44,14 +46,14 @@ static void	second_main(size_t length,
 	free(philosophers);
 }
 
-static void fourth_main(size_t length)
+static void fourth_main(t_philosopher arg)
 {
 	pthread_mutex_t	*sem_arr;
 	pthread_mutex_t	mutex;
 	pthread_t		*thread;
 
-	sem_arr = init_multisems(length);
-	thread = malloc_talk(sizeof(pthread_t) * length, "philosophers (pthread)\n");
+	sem_arr = init_multisems(arg.length);
+	thread = malloc_talk(sizeof(pthread_t) * arg.length, "philosophers (pthread)\n");
 	if (sem_arr == NULL || thread == NULL)
 	{
 		free(sem_arr);
@@ -59,7 +61,7 @@ static void fourth_main(size_t length)
 		return ;
 	}
 	pthread_mutex_init(&mutex, NULL);
-	second_main(length, sem_arr, &mutex, thread);
+	second_main(arg, sem_arr, &mutex, thread);
 	free(sem_arr);
 	free(thread);
 	pthread_mutex_destroy(&mutex);
@@ -67,17 +69,34 @@ static void fourth_main(size_t length)
 
 int	main(int len, char **str)
 {
+	t_philosopher	arg;
+	size_t	i;
 	size_t	length;
 	bool	is_int;
 
-	if (len < 2)
+	if (len < 5)
 		return (0);
-	is_int = true;
-	length = (size_t)f_abs(f_atoi(str[1], &is_int,
-		"0123456789", knight_of_coin(str[1], ' ')));
-	if (is_int == false || length < 2)
-		return (0);
-	fourth_main(length);
+	i = 1;
+	while ((int)i < len && i < 6)
+	{
+		is_int = true;
+		length = (size_t)f_abs(f_atoi(str[i], &is_int,
+			"0123456789", knight_of_coin(str[i], ' ')));
+		if (is_int == false)
+			return (0);
+		if (i == 1)
+			arg = init_philosopher_unit(0, length, NULL, NULL);
+		if (i == 2)
+			arg.time_to_die = length;
+		if (i == 3)
+			arg.time_to_eat = length;
+		if (i == 4)
+			arg.time_to_sleep = length;
+		if (i == 5)
+			arg.time_to_live = length;
+		i += 1;
+	}
+	fourth_main(arg);
 	return (0);
 }
 

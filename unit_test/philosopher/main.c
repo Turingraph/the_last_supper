@@ -16,10 +16,26 @@ int	main(int len, char **str)
 		return (0);
 	sem_t	*sem_arr = init_multisems(length);
 	pthread_mutex_t mutex;
+	pthread_t	*thread = malloc_talk(sizeof(pthread_t) * length, "philosophers (pthread)\n");
+	pthread_t	*thread_fork = malloc_talk(sizeof(pthread_t) * length, "philosophers (pthread)\n");
 	t_fork	*forks;
 	pthread_mutex_init(&mutex, NULL);
-	philosophers = init_philosopher_arr(length, 100, sem_arr, &mutex);
+	philosophers = init_philosopher_arr(length, 10, sem_arr, &mutex);
 	forks = init_fork_arr(length, sem_arr, &mutex);
+	i = 0;
+	while (i < length)
+	{
+		pthread_create(thread + i, NULL, philosopher_action, (void*)(philosophers + i));
+		pthread_create(thread_fork + i, NULL, fork_action, (void*)(forks + i));
+		i += 1;
+	}
+	i = 0;
+	while (i < length)
+	{
+		pthread_join(thread[i], NULL);
+		pthread_join(thread_fork[i], NULL);
+		i += 1;
+	}
 	i = 0;
 	while (i < length)
 	{
@@ -29,6 +45,8 @@ int	main(int len, char **str)
 	free(forks);
 	free(philosophers);
 	free(sem_arr);
+	free(thread);
+	free(thread_fork);
 	pthread_mutex_destroy(&mutex);
 	return (0);
 }

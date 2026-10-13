@@ -35,6 +35,7 @@ typedef struct t_fork
 // action.c
 
 void	*philosopher_action(void *arg);
+void	*fork_action(void *arg);
 
 // init.c
 

@@ -25,30 +25,14 @@ void	*philosopher_action(void *arg)
 	philosopher = (t_philosopher *)arg;
 	while (philosopher->day < philosopher->max_day)
 	{
-		// if (philosopher->name == 0)
-		// {
-		// 	sem_wait(philosopher->hand_lock_r);
-		// 	sem_wait(philosopher->hand_lock_l);
-		// }
-		// else
-		// {
-			sem_wait(philosopher->hand_lock_l);
-			sem_wait(philosopher->hand_lock_r);
-		// }
+		sem_wait(philosopher->hand_lock_l);
+		sem_wait(philosopher->hand_lock_r);
 		usleep(philosopher->eat_time);
 		pthread_mutex_lock(philosopher->mutex);
 		write_philosopher_biography(philosopher, true);
 		pthread_mutex_unlock(philosopher->mutex);
-		// if (philosopher->name == 0)
-		// {
-		// 	sem_post(philosopher->hand_lock_r);
-		// 	sem_post(philosopher->hand_lock_l);
-		// }
-		// else
-		// {
-			sem_post(philosopher->hand_lock_l);
-			sem_post(philosopher->hand_lock_r);
-		// }
+		sem_post(philosopher->hand_lock_l);
+		sem_post(philosopher->hand_lock_r);
 		usleep(philosopher->think_time);
 		pthread_mutex_lock(philosopher->mutex);
 		write_philosopher_biography(philosopher, false);

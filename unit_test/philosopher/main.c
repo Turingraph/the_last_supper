@@ -22,19 +22,23 @@ static void	third_main(size_t length, pthread_t *thread, t_philosopher *philosop
 }
 
 static void	second_main(size_t length,
-	sem_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
+	pthread_mutex_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
 {
 	t_philosopher	*philosophers;
 	size_t			i;
 
-	philosophers = init_philosopher_arr(length, 10, sem_arr, mutex);
+	philosophers = init_philosopher_arr(length, sem_arr, mutex);
+	update_philosophers(philosophers, 10, E_TIMETOLIVE, length);
+	update_philosophers(philosophers, 100, E_TIMETOEAT, length);
+	update_philosophers(philosophers, 100, E_TIMETODIE, length);
+	update_philosophers(philosophers, 100, E_TIMETOSLEEP, length);
 	if (philosophers == NULL)
 		return ;
 	third_main(length, thread, philosophers);
 	i = 0;
 	while (i < length)
 	{
-		sem_destroy(sem_arr + i);
+		pthread_mutex_destroy(sem_arr + i);
 		i += 1;
 	}
 	free(philosophers);
@@ -42,7 +46,7 @@ static void	second_main(size_t length,
 
 static void fourth_main(size_t length)
 {
-	sem_t			*sem_arr;
+	pthread_mutex_t	*sem_arr;
 	pthread_mutex_t	mutex;
 	pthread_t		*thread;
 

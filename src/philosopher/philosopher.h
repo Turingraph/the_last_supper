@@ -5,33 +5,56 @@
 # include <pthread.h>
 # include <semaphore.h>
 
+/**
+ * - length: number_of_philosophers
+ * - time_to_die: 
+ * 		If a philosopher has not started eating within
+ * 		time_to_die milliseconds since the start of their last meal
+ * 		or the start of the simulation, they die.
+ * - time_to_eat (in milliseconds):
+ * 		The time it takes for a philosopher to eat.
+ * - time_to_sleep:
+ * 		The time a philosopher will spend sleeping.
+ * - time_to_live:
+ * 		number_of_times_each_philosopher_must_eat.
+ * 		0 = indefinitely until someone die from starvation.
+ */
 typedef struct t_philosopher
 {
 	size_t	name;
 	size_t	length;
 	bool	is_pick_left;
 	bool	is_pick_right;
-	size_t	eat_time;
-	// size_t	starve_time;
-	size_t	day;
-	size_t	max_day;
-	size_t	think_time;
-	sem_t *hand_lock_l;
-	sem_t *hand_lock_r;
+	size_t	time_to_eat;
+	size_t	time_to_die;
+	size_t	current_time;
+	size_t	time_to_live;
+	size_t	time_to_sleep;
+	pthread_mutex_t *hand_lock_l;
+	pthread_mutex_t *hand_lock_r;
 	pthread_mutex_t	*mutex;
 }	t_philosopher;
+
+typedef enum t_timetodo
+{
+	E_TIMETOLIVE,
+	E_TIMETOEAT,
+	E_TIMETODIE,
+	E_TIMETOSLEEP,
+}	t_timetodo;
 
 // action.c
 
 void	*philosopher_right_action(void *arg);
 void	*philosopher_left_action(void *arg);
+void	update_philosophers(t_philosopher *dst,
+	size_t value, t_timetodo key, size_t length);
 
 // init.c
 
 t_philosopher	*init_philosopher_arr(size_t length,
-	size_t max_day,
-	sem_t *hand_lock,
+	pthread_mutex_t *hand_lock,
 	pthread_mutex_t *mutex);
-sem_t	*init_multisems(size_t length);
+pthread_mutex_t	*init_multisems(size_t length);
 
 #endif

@@ -1,5 +1,15 @@
 #include "philosopher.h"
 
+bool	f_is_loop(const t_philosopher *src)
+{
+	if (src == NULL)
+		return (false);
+	if (((0 < src->time_to_live && src->current_time < src->time_to_live)
+		|| (src->time_to_live == 0)) && src->is_loop != NULL && *src->is_loop == true)
+		return (true);
+	return (false);
+}
+
 void	write_philosopher_biography(
 	const t_philosopher *philosopher, t_philo_action action)
 {
@@ -9,6 +19,11 @@ void	write_philosopher_biography(
 	if (philosopher == NULL)
 		return ;
 	pthread_mutex_lock(philosopher->mutex);
+	if (f_is_loop(philosopher) == false)
+	{
+		pthread_mutex_unlock(philosopher->mutex);
+		return ;
+	}
 	ft_putnbr_fd(current, 1, "0123456789", 1);
 	write(1, " ", 1);
 	ft_putnbr_fd(philosopher->name + 1, 1, "0123456789", 1);
@@ -54,16 +69,6 @@ void	lock_hand(t_philosopher *src, bool lock)
 	}
 }
 
-bool	f_is_loop(t_philosopher *src)
-{
-	if (src == NULL)
-		return (false);
-	if (((0 < src->time_to_live && src->current_time < src->time_to_live)
-		|| (src->time_to_live == 0)) && src->is_loop != NULL && *src->is_loop == true)
-		return (true);
-	return (false);
-}
-
 void	*philosopher_action(void *arg)
 {
 	t_philosopher	*philosopher;
@@ -84,7 +89,11 @@ void	*philosopher_action(void *arg)
 		{
 			write_philosopher_biography(philosopher, E_ACT_DIE);
 			if (philosopher->is_loop != NULL)
+			{
+				pthread_mutex_lock(philosopher->mutex);
 				*(philosopher->is_loop) = false;
+				pthread_mutex_unlock(philosopher->mutex);
+			}
 		}
 		philosopher->prev_eat = clock();
 		lock_hand(philosopher, false);

@@ -82,7 +82,7 @@ int	main(int len, char **str)
 		is_int = true;
 		length = (size_t)f_abs(f_atoi(str[i], &is_int,
 			"0123456789", knight_of_coin(str[i], ' ')));
-		if (is_int == false)
+		if (is_int == false || (i != 3 && length < 1))
 			return (0);
 		if (i == 1)
 			arg = init_philosopher_unit(0, length, NULL, NULL);
@@ -96,10 +96,48 @@ int	main(int len, char **str)
 			arg.time_to_live = length;
 		i += 1;
 	}
-	fourth_main(arg);
+	if (arg.length < 2)
+	{
+		usleep(arg.time_to_die);
+		clock_t current = clock();
+		ft_putnbr_fd(current, 1, "0123456789", 1);
+		write(1, " 1 die\n", 7);
+	}
+	else
+		fourth_main(arg);
 	return (0);
 }
 
 /*
-valgrind --leak-check=full --show-leak-kinds=all ./unit_test/out/philosopher/main.out
+valgrind --leak-check=full --show-leak-kinds=all ./out/main.out 10 10000 700 2400 6
+
+pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$ valgrind --leak-check=full --show-leak-kinds=all ./out/main.out 10 10000 700 2400 6
+==440480== Memcheck, a memory error detector
+==440480== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==440480== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==440480== Command: ./out/main.out 10 10000 700 2400 6
+==440480== 
+907264 6 is eating(0)
+911799 8 is eating(0)
+911841 2 is eating(0)
+915007 4 die(0)
+919694 9 die(0)
+919744 7 die(0)
+928869 1 die(0)
+928918 5 die(0)
+928968 3 die(0)
+929152 6 is sleeping(1)
+929187 8 is sleeping(1)
+929237 2 is sleeping(1)
+933257 10 die(0)
+==440480== 
+==440480== HEAP SUMMARY:
+==440480==     in use at exit: 0 bytes in 0 blocks
+==440480==   total heap usage: 13 allocs, 13 frees, 4,240 bytes allocated
+==440480== 
+==440480== All heap blocks were freed -- no leaks are possible
+==440480== 
+==440480== For lists of detected and suppressed errors, rerun with: -s
+==440480== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$ 
 */

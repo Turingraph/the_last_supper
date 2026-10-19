@@ -141,3 +141,21 @@ pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$ valgrind --leak-ch
 ==440480== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$ 
 */
+
+/*
+Note
+1.	Add fork message (after thinking when able to access fork).
+2.	Think after sleep and before eating. Someone might think until they die from starvation.
+3.	use tester and visualizer ( https://rom98759.github.io/Philosophers-visualizer/ )
+4.	A message announcing a philosopher’s death must be displayed within (don't have to be late than) 10 ms of
+their actual death.
+5.	Timestamps are not in ascending order.
+
+// What it is doing and why doing it ?
+// 
+if (philo->fork_left < philo->fork_right)
+	//...
+
+Reference
+*	https://github.com/TrailOshell/philo
+*/

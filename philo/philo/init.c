@@ -2,7 +2,7 @@
 
 t_philosopher	init_philosopher_unit(size_t i,
 	size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex)
 {
 	t_philosopher	dst;
@@ -12,25 +12,33 @@ t_philosopher	init_philosopher_unit(size_t i,
 	dst.is_pick_left = false;
 	dst.is_pick_right = false;
 	dst.current_time = 0;
-	dst.time_to_live = 100;
+	dst.time_to_live = 0;
 	dst.time_to_eat = 100;
 	dst.time_to_sleep = 100;
-	dst.prev_eat = 0;
+	dst.prev_eat = clock();
 	dst.is_loop = NULL;
-	dst.hand_lock_l = hand_lock + i;
-	dst.hand_lock_r = hand_lock + (i + 1) % length;
+	if (fork_lock != NULL)
+	{
+		dst.fork_lock_l = fork_lock + i;
+		dst.fork_lock_r = fork_lock + (i + 1) % length;
+	}
+	else
+	{
+		dst.fork_lock_l = NULL;
+		dst.fork_lock_r = NULL;
+	}
 	dst.mutex = mutex;
 	return (dst);
 }
 
 t_philosopher	*init_philosopher_arr(size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex)
 {
 	t_philosopher	*dst;
 	size_t	i;
 
-	if (length < 2 || hand_lock == NULL)
+	if (length < 2 || fork_lock == NULL)
 		return (NULL);
 	dst = malloc_talk(sizeof(t_philosopher) * length, "philosopher\n");
 	if (dst == NULL)
@@ -38,7 +46,7 @@ t_philosopher	*init_philosopher_arr(size_t length,
 	i = 0;
 	while (i < length)
 	{
-		dst[i] = init_philosopher_unit(i, length, hand_lock, mutex);
+		dst[i] = init_philosopher_unit(i, length, fork_lock, mutex);
 		i += 1;
 	}
 	return (dst);

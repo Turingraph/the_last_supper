@@ -28,8 +28,10 @@ void	write_philosopher_biography(
 	write(1, " ", 1);
 	ft_putnbr_fd(philosopher->name + 1, 1, "0123456789", 1);
 	write(1, " ", 1);
-	if (action == E_ACT_FORK)
-		write(1, "has taken a fork", 16);
+	if (action == E_ACT_FORK_L)
+		write(1, "has taken a left fork", 21);
+	if (action == E_ACT_FORK_R)
+		write(1, "has taken a right fork", 22);
 	if (action == E_ACT_THINK)
 		write(1, "is thinking", 11);
 	if (action == E_ACT_EAT)
@@ -45,27 +47,31 @@ void	write_philosopher_biography(
 	pthread_mutex_unlock(philosopher->mutex);
 }
 
-void	lock_hand(t_philosopher *src, bool lock)
+void	locking_fork(t_philosopher *src, bool lock)
 {
 	if (lock == true && src->name % 2 == 0)
 	{
-		pthread_mutex_lock(src->hand_lock_l);
-		pthread_mutex_lock(src->hand_lock_r);
+		pthread_mutex_lock(src->fork_lock_l);
+		write_philosopher_biography(src, E_ACT_FORK_L);
+		pthread_mutex_lock(src->fork_lock_r);
+		write_philosopher_biography(src, E_ACT_FORK_R);
 	}
 	if (lock == false && src->name % 2 == 0)
 	{
-		pthread_mutex_unlock(src->hand_lock_l);
-		pthread_mutex_unlock(src->hand_lock_r);
+		pthread_mutex_unlock(src->fork_lock_l);
+		pthread_mutex_unlock(src->fork_lock_r);
 	}
 	if (lock == true && src->name % 2 == 1)
 	{
-		pthread_mutex_lock(src->hand_lock_r);
-		pthread_mutex_lock(src->hand_lock_l);
+		pthread_mutex_lock(src->fork_lock_r);
+		write_philosopher_biography(src, E_ACT_FORK_R);
+		pthread_mutex_lock(src->fork_lock_l);
+		write_philosopher_biography(src, E_ACT_FORK_L);
 	}
 	if (lock == false && src->name % 2 == 1)
 	{
-		pthread_mutex_unlock(src->hand_lock_r);
-		pthread_mutex_unlock(src->hand_lock_l);
+		pthread_mutex_unlock(src->fork_lock_r);
+		pthread_mutex_unlock(src->fork_lock_l);
 	}
 }
 
@@ -77,10 +83,9 @@ void	*philosopher_action(void *arg)
 	if (arg == NULL)
 		return (NULL);
 	philosopher = (t_philosopher *)arg;
-	philosopher->prev_eat = clock();
 	while (f_is_loop(philosopher) == true)
 	{
-		lock_hand(philosopher, true);
+		locking_fork(philosopher, true);
 		usleep(philosopher->time_to_eat);
 		current = clock();
 		if (current - philosopher->prev_eat < philosopher->time_to_die)
@@ -96,7 +101,7 @@ void	*philosopher_action(void *arg)
 			}
 		}
 		philosopher->prev_eat = clock();
-		lock_hand(philosopher, false);
+		locking_fork(philosopher, false);
 		philosopher->current_time += 1;
 		if (f_is_loop(philosopher) == true)
 		{

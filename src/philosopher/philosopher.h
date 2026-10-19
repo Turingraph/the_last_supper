@@ -33,8 +33,8 @@ typedef struct t_philosopher
 	size_t	time_to_live;
 	size_t	time_to_sleep;
 	size_t	prev_eat;
-	pthread_mutex_t *hand_lock_l;
-	pthread_mutex_t *hand_lock_r;
+	pthread_mutex_t *fork_lock_l;
+	pthread_mutex_t *fork_lock_r;
 	pthread_mutex_t	*mutex;
 }	t_philosopher;
 
@@ -66,10 +66,10 @@ void	update_philosophers(t_philosopher *dst,
 
 t_philosopher	init_philosopher_unit(size_t i,
 	size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex);
 t_philosopher	*init_philosopher_arr(size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex);
 pthread_mutex_t	*init_multisems(size_t length);
 

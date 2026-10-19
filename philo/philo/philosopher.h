@@ -35,8 +35,8 @@ typedef struct t_philosopher
 	size_t	time_to_live;
 	size_t	time_to_sleep;
 	size_t	prev_eat;
-	pthread_mutex_t *hand_lock_l;
-	pthread_mutex_t *hand_lock_r;
+	pthread_mutex_t *fork_lock_l;
+	pthread_mutex_t *fork_lock_r;
 	pthread_mutex_t	*mutex;
 }	t_philosopher;
 
@@ -50,7 +50,8 @@ typedef enum t_timetodo
 
 typedef enum t_philo_action
 {
-	E_ACT_FORK,
+	E_ACT_FORK_L,
+	E_ACT_FORK_R,
 	E_ACT_THINK,
 	E_ACT_EAT,
 	E_ACT_DIE,
@@ -74,10 +75,10 @@ size_t	ft_putnbr_fd(int n, int fd, const char *base, size_t digits);
 
 t_philosopher	init_philosopher_unit(size_t i,
 	size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex);
 t_philosopher	*init_philosopher_arr(size_t length,
-	pthread_mutex_t *hand_lock,
+	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex);
 pthread_mutex_t	*init_multisems(size_t length);
 

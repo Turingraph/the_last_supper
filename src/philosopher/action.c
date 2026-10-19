@@ -30,27 +30,27 @@ void	write_philosopher_biography(
 	pthread_mutex_unlock(philosopher->mutex);
 }
 
-void	lock_hand(t_philosopher *src, bool lock)
+void	locking_fork(t_philosopher *src, bool lock)
 {
 	if (lock == true && src->name % 2 == 0)
 	{
-		pthread_mutex_lock(src->hand_lock_l);
-		pthread_mutex_lock(src->hand_lock_r);
+		pthread_mutex_lock(src->fork_lock_l);
+		pthread_mutex_lock(src->fork_lock_r);
 	}
 	if (lock == false && src->name % 2 == 0)
 	{
-		pthread_mutex_unlock(src->hand_lock_l);
-		pthread_mutex_unlock(src->hand_lock_r);
+		pthread_mutex_unlock(src->fork_lock_l);
+		pthread_mutex_unlock(src->fork_lock_r);
 	}
 	if (lock == true && src->name % 2 == 1)
 	{
-		pthread_mutex_lock(src->hand_lock_r);
-		pthread_mutex_lock(src->hand_lock_l);
+		pthread_mutex_lock(src->fork_lock_r);
+		pthread_mutex_lock(src->fork_lock_l);
 	}
 	if (lock == false && src->name % 2 == 1)
 	{
-		pthread_mutex_unlock(src->hand_lock_r);
-		pthread_mutex_unlock(src->hand_lock_l);
+		pthread_mutex_unlock(src->fork_lock_r);
+		pthread_mutex_unlock(src->fork_lock_l);
 	}
 }
 
@@ -75,7 +75,7 @@ void	*philosopher_action(void *arg)
 	philosopher->prev_eat = clock();
 	while (f_is_loop(philosopher) == true)
 	{
-		lock_hand(philosopher, true);
+		locking_fork(philosopher, true);
 		usleep(philosopher->time_to_eat);
 		current = clock();
 		if (current - philosopher->prev_eat < philosopher->time_to_die)
@@ -87,7 +87,7 @@ void	*philosopher_action(void *arg)
 				*(philosopher->is_loop) = false;
 		}
 		philosopher->prev_eat = clock();
-		lock_hand(philosopher, false);
+		locking_fork(philosopher, false);
 		philosopher->current_time += 1;
 		if (f_is_loop(philosopher) == true)
 		{

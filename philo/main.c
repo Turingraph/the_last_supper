@@ -1,16 +1,16 @@
-# include "philo/philosopher.h"
+# include "philo/philo.h"
 
 static void	third_main(size_t length, pthread_t *thread,
-	t_philosopher *philosophers, bool *is_loop)
+	t_philo *philos, bool *is_loop)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < length)
 	{
-		philosophers[i].is_loop = is_loop;
+		philos[i].is_loop = is_loop;
 		pthread_create(thread + i, NULL,
-			philosopher_action, (void*)(philosophers + i));
+			philo_action, (void*)(philos + i));
 		i += 1;
 	}
 	i = 0;
@@ -21,39 +21,39 @@ static void	third_main(size_t length, pthread_t *thread,
 	}
 }
 
-static void	second_main(t_philosopher arg,
+static void	second_main(t_philo arg,
 	pthread_mutex_t *sem_arr, pthread_mutex_t *mutex, pthread_t *thread)
 {
-	t_philosopher	*philosophers;
+	t_philo	*philos;
 	size_t			i;
 	bool			is_loop;
 
-	philosophers = init_philosopher_arr(arg.length, sem_arr, mutex);
-	update_philosophers(philosophers, arg.time_to_live, E_TIMETOLIVE, arg.length);
-	update_philosophers(philosophers, arg.time_to_eat, E_TIMETOEAT, arg.length);
-	update_philosophers(philosophers, arg.time_to_die, E_TIMETODIE, arg.length);
-	update_philosophers(philosophers, arg.time_to_sleep, E_TIMETOSLEEP, arg.length);
-	if (philosophers == NULL)
+	philos = init_philo_arr(arg.length, sem_arr, mutex);
+	update_philos(philos, arg.time_to_live, E_TIMETOLIVE, arg.length);
+	update_philos(philos, arg.time_to_eat, E_TIMETOEAT, arg.length);
+	update_philos(philos, arg.time_to_die, E_TIMETODIE, arg.length);
+	update_philos(philos, arg.time_to_sleep, E_TIMETOSLEEP, arg.length);
+	if (philos == NULL)
 		return ;
 	is_loop = true;
-	third_main(arg.length, thread, philosophers, &is_loop);
+	third_main(arg.length, thread, philos, &is_loop);
 	i = 0;
 	while (i < arg.length)
 	{
 		pthread_mutex_destroy(sem_arr + i);
 		i += 1;
 	}
-	free(philosophers);
+	free(philos);
 }
 
-static void fourth_main(t_philosopher arg)
+static void fourth_main(t_philo arg)
 {
 	pthread_mutex_t	*sem_arr;
 	pthread_mutex_t	mutex;
 	pthread_t		*thread;
 
 	sem_arr = init_multisems(arg.length);
-	thread = malloc_talk(sizeof(pthread_t) * arg.length, "philosophers (pthread)\n");
+	thread = malloc_talk(sizeof(pthread_t) * arg.length, "philos (pthread)\n");
 	if (sem_arr == NULL || thread == NULL)
 	{
 		free(sem_arr);
@@ -69,7 +69,7 @@ static void fourth_main(t_philosopher arg)
 
 int	main(int len, char **str)
 {
-	t_philosopher	arg;
+	t_philo	arg;
 	size_t	i;
 	size_t	length;
 	bool	is_int;
@@ -82,10 +82,12 @@ int	main(int len, char **str)
 		is_int = true;
 		length = (size_t)f_abs(f_atoi(str[i], &is_int,
 			"0123456789", knight_of_coin(str[i], ' ')));
-		if (is_int == false || (i != 3 && length < 1))
+		if (is_int == false
+			|| (i == 1 && (length == 0 || length > 200))
+			|| ((i == 2 || i == 3 || i == 4) && length < 60))
 			return (0);
 		if (i == 1)
-			arg = init_philosopher_unit(0, length, NULL, NULL);
+			arg = init_philo_unit(0, length, NULL, NULL);
 		if (i == 2)
 			arg.time_to_die = length;
 		if (i == 3)
@@ -146,8 +148,8 @@ pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$
 Note
 1.	Add fork message (after thinking when able to access fork).
 2.	Think after sleep and before eating. Someone might think until they die from starvation.
-3.	use tester and visualizer ( https://rom98759.github.io/Philosophers-visualizer/ )
-4.	A message announcing a philosopher’s death must be displayed within (don't have to be late than) 10 ms of
+3.	use tester and visualizer ( https://rom98759.github.io/philos-visualizer/ )
+4.	A message announcing a philo’s death must be displayed within (don't have to be late than) 10 ms of
 their actual death.
 5.	Timestamps are not in ascending order.
 
@@ -158,4 +160,14 @@ if (philo->fork_left < philo->fork_right)
 
 Reference
 *	https://github.com/TrailOshell/philo
+*/
+
+/*
+OK: Test 1 800 200 200. The philosopher should not eat and should die.
+KO: Test 5 800 200 200. No philosopher should die.
+KO: Test 5 800 200 200 7. No philosopher should die and the simulation should stop when every philosopher has eaten at least 7 times.
+KO: Test 4 410 200 200. No philosopher should die.
+KO: Test 4 310 200 100. One philosopher should die.
+Test with 2 philosophers and check the different times: a death delayed by more than 10 ms is unacceptable.
+Test with any values of your choice to verify all the requirements. Ensure philosophers die at the right time, that they don't steal forks, and so forth.
 */

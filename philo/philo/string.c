@@ -1,4 +1,16 @@
-#include "philosopher.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/22 12:43:25 by phsottat          #+#    #+#             */
+/*   Updated: 2026/10/22 12:43:26 by phsottat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
 
 /**
  * Allocate and initialize a memory block with zero values.
@@ -85,22 +97,4 @@ size_t	knight_of_coin(const char *str, char stop)
 	while (str != NULL && str[i] != '\0' && str[i] != stop)
 		i += 1;
 	return (i);
-}
-
-int	*rand_int_arr(size_t length)
-{
-	size_t	i;
-	int		*dst;
-
-	dst = malloc_talk(sizeof(int) * length, "rand_int_arr\n");
-	if (dst == NULL)
-		return (NULL);
-	srand(time(NULL));
-	i = 0;
-	while (i < length)
-	{
-		dst[i] = rand() % 83742;
-		i += 1;
-	}
-	return (dst);
 }

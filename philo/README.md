@@ -15,3 +15,8 @@ run `make`
 *	https://youtu.be/d9s_d28yJq0?si=MKrIvC-PSKP9Re_i
 3.	Philosopher tester
 *	https://github.com/MichelleJiam/LazyPhilosophersTester
+
+# TO DO LIST
+
+1.  talk with other people about the Philosophers assignments.
+2.  Fix norm42.

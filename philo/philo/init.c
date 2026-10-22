@@ -1,11 +1,23 @@
-#include "philosopher.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/22 12:27:52 by phsottat          #+#    #+#             */
+/*   Updated: 2026/10/22 14:20:41 by phsottat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_philosopher	init_philosopher_unit(size_t i,
+#include "philo.h"
+
+t_philo	init_philo_unit(size_t i,
 	size_t length,
 	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex)
 {
-	t_philosopher	dst;
+	t_philo	dst;
 
 	dst.name = i;
 	dst.length = length;
@@ -31,28 +43,28 @@ t_philosopher	init_philosopher_unit(size_t i,
 	return (dst);
 }
 
-t_philosopher	*init_philosopher_arr(size_t length,
+t_philo	*init_philo_arr(size_t length,
 	pthread_mutex_t *fork_lock,
 	pthread_mutex_t *mutex)
 {
-	t_philosopher	*dst;
+	t_philo	*dst;
 	size_t	i;
 
 	if (length < 2 || fork_lock == NULL)
 		return (NULL);
-	dst = malloc_talk(sizeof(t_philosopher) * length, "philosopher\n");
+	dst = malloc_talk(sizeof(t_philo) * length, "philo\n");
 	if (dst == NULL)
 		return (NULL);
 	i = 0;
 	while (i < length)
 	{
-		dst[i] = init_philosopher_unit(i, length, fork_lock, mutex);
+		dst[i] = init_philo_unit(i, length, fork_lock, mutex);
 		i += 1;
 	}
 	return (dst);
 }
 
-void	update_philosophers(t_philosopher *dst,
+void	update_philos(t_philo *dst,
 	size_t value, t_timetodo key, size_t length)
 {
 	size_t	i;

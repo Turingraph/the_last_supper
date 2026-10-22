@@ -6,11 +6,11 @@
 /*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 12:54:49 by phsottat          #+#    #+#             */
-/*   Updated: 2026/09/02 12:54:50 by phsottat         ###   ########.fr       */
+/*   Updated: 2026/10/22 12:36:59 by phsottat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philo.h"
 
 // time : O(n)
 // space: O(1)

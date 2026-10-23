@@ -6,7 +6,7 @@
 /*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 12:33:59 by phsottat          #+#    #+#             */
-/*   Updated: 2026/10/22 14:27:23 by phsottat         ###   ########.fr       */
+/*   Updated: 2026/10/23 13:13:52 by phsottat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,20 @@ bool	f_is_loop(const t_philo *src)
 {
 	if (src == NULL)
 		return (false);
-	if (((0 < src->time_to_live && src->current_time < src->time_to_live)
+	if (((0 < src->time_to_live && src->current_iter < src->time_to_live)
 			|| (src->time_to_live == 0))
 		&& src->is_loop != NULL && *src->is_loop == true)
 		return (true);
 	return (false);
+}
+
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 static void	write_philo_record_unit(t_philo_action action)
@@ -41,15 +50,6 @@ static void	write_philo_record_unit(t_philo_action action)
 		write(1, "is sleeping", 11);
 }
 
-// size_t	get_current_time(void)
-// {
-// 	struct timeval	time;
-
-// 	if (gettimeofday(&time, NULL) == -1)
-// 		write(2, "gettimeofday() error\n", 22);
-// 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-// }
-
 void	write_philo_record(
 	const t_philo *philo, t_philo_action action)
 {
@@ -58,7 +58,15 @@ void	write_philo_record(
 	if (philo == NULL)
 		return ;
 	pthread_mutex_lock(philo->mutex);
-	current = clock();
+	if (*philo->current_time == 0)
+	{
+		current = 0;
+		*philo->current_time = clock();
+	}
+	else
+	{
+		current = clock() - *philo->current_time;
+	}
 	if (f_is_loop(philo) == false)
 	{
 		pthread_mutex_unlock(philo->mutex);
@@ -74,5 +82,5 @@ void	write_philo_record(
 }
 
 // write(1, "(", 1);
-// ft_putnbr_fd(philo->current_time, 1, "0123456789", 1);
+// ft_putnbr_fd(philo->current_iter, 1, "0123456789", 1);
 // write(1, ")", 1);

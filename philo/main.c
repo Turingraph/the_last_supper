@@ -26,6 +26,7 @@ static void	second_main(t_philo arg,
 {
 	t_philo	*philos;
 	size_t			i;
+	size_t			current_time;
 	bool			is_loop;
 
 	philos = init_philo_arr(arg.length, sem_arr, mutex);
@@ -35,6 +36,13 @@ static void	second_main(t_philo arg,
 	update_philos(philos, arg.time_to_sleep, E_TIMETOSLEEP, arg.length);
 	if (philos == NULL)
 		return ;
+	i = 0;
+	current_time = 0;
+	while (i < arg.length)
+	{
+		philos[i].current_time = &current_time;
+		i += 1;
+	}
 	is_loop = true;
 	third_main(arg.length, thread, philos, &is_loop);
 	i = 0;

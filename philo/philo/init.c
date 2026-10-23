@@ -6,7 +6,7 @@
 /*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 12:27:52 by phsottat          #+#    #+#             */
-/*   Updated: 2026/10/22 14:20:41 by phsottat         ###   ########.fr       */
+/*   Updated: 2026/10/23 12:18:54 by phsottat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ t_philo	init_philo_unit(size_t i,
 	dst.length = length;
 	dst.is_pick_left = false;
 	dst.is_pick_right = false;
-	dst.current_time = 0;
+	dst.current_iter = 0;
 	dst.time_to_live = 0;
 	dst.time_to_eat = 100;
+	dst.current_time = NULL;
 	dst.time_to_sleep = 100;
 	dst.prev_eat = clock();
 	dst.is_loop = NULL;

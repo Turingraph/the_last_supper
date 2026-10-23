@@ -6,7 +6,7 @@
 /*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 12:33:16 by phsottat          #+#    #+#             */
-/*   Updated: 2026/10/22 19:08:30 by phsottat         ###   ########.fr       */
+/*   Updated: 2026/10/23 13:13:42 by phsottat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	*philo_action(void *arg)
 	while (f_is_loop(philo) == true)
 	{
 		locking_fork(philo, true);
-		usleep(philo->time_to_eat);
 		current = clock();
 		if (current - philo->prev_eat < philo->time_to_die)
 			write_philo_record(philo, E_ACT_EAT);
@@ -70,10 +69,11 @@ void	*philo_action(void *arg)
 				pthread_mutex_unlock(philo->mutex);
 			}
 		}
+		usleep(philo->time_to_eat);
 		locking_fork(philo, false);
 		philo->prev_eat = clock();
 		if (philo->time_to_live > 0)
-			philo->current_time += 1;
+			philo->current_iter += 1;
 		if (f_is_loop(philo) == true)
 		{
 			write_philo_record(philo, E_ACT_SLEEP);

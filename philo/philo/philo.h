@@ -41,9 +41,10 @@ typedef struct t_philo
 	bool			is_pick_left;
 	bool			is_pick_right;
 	bool			*is_loop;
+	size_t			*current_time;
 	size_t			time_to_eat;
 	size_t			time_to_die;
-	size_t			current_time;
+	size_t			current_iter;
 	size_t			time_to_live;
 	size_t			time_to_sleep;
 	size_t			prev_eat;
@@ -109,5 +110,6 @@ size_t			knight_of_coin(const char *str, char stop);
 bool			f_is_loop(const t_philo *src);
 void			write_philo_record(
 					const t_philo *philo, t_philo_action action);
+size_t	get_current_time(void);
 
 #endif

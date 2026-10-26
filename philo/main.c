@@ -119,6 +119,10 @@ int	main(int len, char **str)
 }
 
 /*
+
+*/
+
+/*
 valgrind --leak-check=full --show-leak-kinds=all ./out/main.out 10 10000 700 2400 6
 
 pc@pc-System-Product-Name:~/Desktop/love_the_knowledge/philo$ valgrind --leak-check=full --show-leak-kinds=all ./out/main.out 10 10000 700 2400 6

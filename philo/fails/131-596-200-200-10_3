@@ -1,3 +1,31 @@
 0 1 L
-0 1 R
-0 1 die
+29 1 R
+38 1 is eating
+55 2 R
+77 4 R
+92 4 L
+100 4 is eating
+115 6 R
+131 6 L
+141 6 is eating
+157 8 R
+176 8 L
+185 8 is eating
+201 10 R
+218 10 L
+228 10 is eating
+244 12 R
+276 12 L
+287 12 is eating
+306 14 R
+318 14 L
+335 14 is eating
+354 16 R
+371 16 L
+382 16 is eating
+400 18 R
+441 5 L
+486 2 L
+510 2 is eating
+527 18 L
+567 18 die

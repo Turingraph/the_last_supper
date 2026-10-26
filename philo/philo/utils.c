@@ -6,7 +6,7 @@
 /*   By: phsottat <phsottat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 12:33:59 by phsottat          #+#    #+#             */
-/*   Updated: 2026/10/23 13:13:52 by phsottat         ###   ########.fr       */
+/*   Updated: 2026/10/26 15:03:32 by phsottat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,19 @@ void	write_philo_record(
 
 	if (philo == NULL)
 		return ;
-	pthread_mutex_lock(philo->mutex);
 	if (*philo->current_time == 0)
 	{
 		current = 0;
-		*philo->current_time = clock();
+		*philo->current_time = get_current_time();
 	}
 	else
-	{
-		current = clock() - *philo->current_time;
-	}
+		current = get_current_time() - *philo->current_time;
 	if (f_is_loop(philo) == false)
 	{
 		pthread_mutex_unlock(philo->mutex);
 		return ;
 	}
+	pthread_mutex_lock(philo->mutex);
 	ft_putnbr_fd(current, 1, "0123456789", 1);
 	write(1, " ", 1);
 	ft_putnbr_fd(philo->name + 1, 1, "0123456789", 1);

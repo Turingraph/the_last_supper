@@ -1,3 +1,19 @@
 0 1 L
-0 1 R
-0 1 die
+33 1 R
+129 1 is eating
+131 2 R
+174 1 is sleeping
+203 4 R
+227 4 L
+250 4 is eating
+272 2 L
+284 2 is eating
+296 1 is thinking
+317 4 is sleeping
+340 1 L
+365 1 R
+386 1 is eating
+408 2 is sleeping
+421 3 L
+441 3 R
+458 3 die
